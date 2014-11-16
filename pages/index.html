@@ -1,0 +1,78 @@
+{# YOUR HOMEPAGE #}
+
+{# First time seeing extend or blocks? Want to know how it works? Tutorial here: http://www.webhook.com #}
+{% extends "templates/partials/base.html" %}
+
+{% block content %}
+
+  {# Grabs the data to list all the content types (set as multiple) from the CMS. #}
+  {% set types = getTypes() %}
+
+  {# If you have at least content page type, we show a list. #}
+  {% if types|size !== 0 %}
+{# AD PLACEHOLDER #}
+
+<script>$('.nav li:nth-child(1)').toggleClass("active");</script>
+
+<!--<img class="displayad center-block" src="http://placehold.it/728x90&text=Ad+Placeholder">-->
+<!--<img class="mobilead center-block" src="http://placehold.it/300x50&text=Ad+Placeholder">-->
+
+  {# INTRO SECTION#}
+<div class=intro>
+	<h2>Welcome to WorkWisdom</h2>
+	<p>WorkWisdom is a place to find wise saying for business from around the world. You can submit your own sayings or browse our collection. 
+	As sayings are added to the site, you will see them appear below in the 'Latest Quotes' section.</p>
+	<a href="/submit" class="btn btn-success">Submit</a> <a href="/quotes" class="btn btn-success">Browse</a>
+ </div>
+ 
+ 
+<link rel="stylesheet" href="/static/css/gallery.prefixed.css">
+<link rel="stylesheet" href="/static/css/gallery.min.css">
+
+<div class="gallery autoplay items-5">
+  <div id="item-1" class="control-operator"></div>
+  <div id="item-2" class="control-operator"></div>
+  <div id="item-3" class="control-operator"></div>
+  <div id="item-4" class="control-operator"></div>
+  <div id="item-5" class="control-operator"></div>
+{% set data = cms.quotes %}
+{% for quotes in data%}
+  <figure class="item">
+    <h1>"{{quotes.quotation}}"</h1>
+	<p>by {{quotes.author.first}} {{quotes.author.last}}<p>
+  </figure>
+{% endfor %}
+  <div class="controls">
+    <a href="#item-1" class="control-button">•</a>
+    <a href="#item-2" class="control-button">•</a>
+    <a href="#item-3" class="control-button">•</a>
+	<a href="#item-4" class="control-button">•</a>
+	<a href="#item-5" class="control-button">•</a>
+  </div>
+</div>
+
+{# QUOTES #}
+<div class="container">
+<h1>Latest Quotes</h1>
+  {% set data = cms.quotes %}
+  {# This forloop can use any data from http:localhost:2000/cms/#/form/quotes/ #}
+
+		<div class="row">
+				{% for quotes in data%}
+				<div class="item">
+					<div class="well"> 
+						<a href="{{ url(quotes) }}"><h4>{{ quotes.name }}</h4></a>
+						<blockquote>
+						{{ quotes.quotation }}
+						</blockquote>
+						- <a href="/people/{{quotes.author.first}}{% if quotes.author.last %}-{{quotes.author.last}}{% endif %}">{{quotes.author.first}}{% if quotes.author.last %} {{quotes.author.last}}{% endif %}</a>
+						</div>
+				</div>
+				{% endfor %}
+			</div>
+</div>
+
+  {# The actual pagination template, feel free to edit or replace the default one. #}
+  {% include "templates/partials/paginator.html" %}
+  {% endif %}
+{% endblock %}

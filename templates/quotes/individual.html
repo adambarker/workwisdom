@@ -1,0 +1,25 @@
+{# ------------------------------------------------------- #}
+{# INDIVIDUAL VIEW FOR EACH quotes #}
+{# This page can use any data from http:localhost:2000/cms/#/form/quotes/ #}
+{# Webhook uses the SWIG.js (like Djagno/Twig) templating system. Their documentation is here: #}
+{# http://paularmstrong.github.io/swig/docs/tags/ #}
+{# Learn about calling data into Webhook pages here: #}
+{# http://www.webhook.com/docs/template-rules-and-filters/ #}
+{# ------------------------------------------------------- #}
+{# Confused what extends and blocks do? Watch a primer: #}
+{# http://www.webhook.com/docs/template-inheritance-blocks/ #}
+{% extends "templates/partials/base.html" %}
+{# This sets our page <title>. It will append this quotes's name to the site title defined in base.html #}
+{% block title %}{% parent %} - {{ item.name }}{% endblock %}
+{% block content %}
+<script>$('.nav li:nth-child(2)').toggleClass("active");</script>
+<div class="container">
+  <p><a href="{{ url('quotes') }}">View a list of all quotes</a></p>
+  <h1>{{ item.name }}</h1>
+ <p class="well">{{ item.quotation }}</p>
+<strong>Author: </strong>
+<a href="/people/{{item.author.first}}{% if item.author.last %}-{{item.author.last}}{% endif %}">{{item.author.first}}{% if item.author.last %} {{item.author.last}}{% endif %}</a>
+<p> <strong>Featured: </strong>{{ item.featured }} </p>
+</div>
+
+{% endblock %}

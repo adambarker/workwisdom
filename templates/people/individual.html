@@ -1,0 +1,44 @@
+{# ------------------------------------------------------- #}
+{# INDIVIDUAL VIEW FOR EACH people #}
+{# This page can use any data from http:localhost:2000/cms/#/form/people/ #}
+{# Webhook uses the SWIG.js (like Djagno/Twig) templating system. Their documentation is here: #}
+{# http://paularmstrong.github.io/swig/docs/tags/ #}
+{# Learn about calling data into Webhook pages here: #}
+{# http://www.webhook.com/docs/template-rules-and-filters/ #}
+{# ------------------------------------------------------- #}
+{# Confused what extends and blocks do? Watch a primer: #}
+{# http://www.webhook.com/docs/template-inheritance-blocks/ #}
+{% extends "templates/partials/base.html" %}
+
+{# This sets our page <title>. It will append this people's name to the site title defined in base.html #}
+{% block title %}{% parent %} - {{ item.name }}{% endblock %}
+<script>$('.nav li:nth-child(3)').toggleClass("active");</script>
+
+{% block content %}
+<div class="container">
+<p><a href="{{ url('people') }}">View a list of all people</a></p>
+<h1>{{ item.name }}</h1>
+  
+{# Embed.ly card generator for Wikipedia entry. To be replaced by Embedly extract API #}
+<!-- <a class="embedly-card" href="http://en.wikipedia.org/wiki/{{item.author.first}}{% if item.author.last %}_{{item.author.last}}{% endif %}">{{item.author.first}}{% if item.author.last %}_{{item.author.last}}{% endif %}</a> -->
+<!-- <script>!function(a){var b="embedly-platform",c="script";if(!a.getElementById(b)){var d=a.createElement(c);d.id=b,d.src=("https:"===document.location.protocol?"https":"http")+"://cdn.embedly.com/widgets/platform.js";var e=document.getElementsByTagName(c)[0];e.parentNode.insertBefore(d,e)}}(document);</script> -->
+  
+ {# Embedly API extract button call #}
+ <script> var hr = $('a').prop('href');$.embedly.extract([hr], {key: 'd9798d2729d1436b999f5def461ea9e4'}).progress(function(result){$('body').html(result.content);}); </script>
+
+  <a href="http://en.wikipedia.org/wiki/{{item.author.first}}{% if item.author.last %}_{{item.author.last}}{% endif %}"> Look  up {{item.author.first}}{% if item.author.last %}_{{item.author.last}}{% endif %}</a>
+<!-- <a class="btn btn-primary" href="http://api.embed.ly/1/extract?key=d9798d2729d1436b999f5def461ea9e4&url=http://en.wikipedia.org/wiki/{{item.author.first}}{% if item.author.last %}_{{item.author.last}}{% endif %}&maxwidth=800&maxheight=400&format=:format&callback=:callback">Extract</a>-->
+  <ul>
+      <li>
+        <strong>Quotes: </strong>
+        {# Relations require some special code. More info about relations here: #}
+        {# http://www.webhook.com/docs/template-rules-and-filters/#getitem #}
+        {% for relation in item.quotes %}
+          {# You can ouput more than just the name. Feel free to output more fields from the CMS. #}
+          <a href="{{ url(relation) }}"><p class="well">{{relation.quotation|truncate(60)}}</p></a>{% if not loop.last %}{% endif %}
+		  
+        {% endfor %}
+      </li>
+  </ul>
+  </div>
+{% endblock %}

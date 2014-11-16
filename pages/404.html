@@ -1,0 +1,25 @@
+{# ------------------------------------------------------- #}
+
+{# 404 PAGE #}
+
+{# This is the 404 page that will display on the live site for users. #}
+{# It does not appear when you run your site locally. #}
+
+{# ------------------------------------------------------- #}
+
+{# Confused what extends and blocks do? Watch a primer: #}
+{# http://www.webhook.com/docs/template-inheritance-blocks/ #}
+{% extends "templates/partials/base.html" %}
+
+{% block content %}
+<link href="static/css/404.css" rel="stylesheet" type="text/css" media="all">
+ <link href='http://fonts.googleapis.com/css?family=Varela' rel='stylesheet' type='text/css'>
+
+<div class="glitch">ERROR</div> 
+ <h1>404 - Nothing to see here</h1>
+
+ <p><a href="/">Take me home!</a></p>
+  
+
+
+{% endblock %}
