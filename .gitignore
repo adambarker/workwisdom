@@ -17,3 +17,7 @@ node_modules
 
 /.build
 /.firebase.conf
+
+EmbedlyAPIKey.txt
+
+goals.txt
